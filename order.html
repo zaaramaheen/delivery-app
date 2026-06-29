@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Water Order</title>
+    <style>
+        body {
+            font-family: "Trebuchet MS", sans-serif;
+            background: #e6f7ff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        h1,
+        h3 {
+            color: #0077b6;
+        }
+
+        label {
+            font-weight: bold;
+            color: #023e8a;
+        }
+
+        input[type="number"],
+        input[type="date"],
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        #confirmationMessage {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e6f7ff;
+            border-left: 6px solid #0096c7;
+            border-radius: 12px;
+            color: #023e8a;
+            font-family: 'Trebuchet MS', sans-serif;
+            box-shadow: 0px, 3px, 8px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+
+        #confirmationMessage h2 {
+            margin-top: 0;
+            color: #0077b6;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: "Trebuchet MS", sans-serif;
+        }
+
+        #placeOrderBtn {
+            background: #0096c7;
+            color: white;
+        }
+
+        #clearOrderBtn {
+            background: #d9d9d9;
+        }
+
+        input[type="radio"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .delivery-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            gap: 10px;
+        }
+
+        .form-row label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 160px;
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1;
+            padding: 6px;
+        }
+
+        .full-input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #deliverySlot {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        #deliverySlot:hover {
+            border-color: #666;
+        }
+
+        #deliverySlot:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            appearance: textfield;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .qty-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .qty-controls input {
+            width: 60px;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: all 0.2s ease;
+        }
+
+        .qty-controls input:focus {
+            transform: scale(1.03);
+        }
+
+        .qty-box input {
+            width: 60px;
+            text-align: center;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.85);
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Water Can Order</h1>
+        <p id="customerName"></p>
+        <p id="customerDetails"></p>
+        <button id="editDetailsBtn">Edit Details</button>
+        <h3>Water Brands</h3>
+        <div class="qty-box">
+            <label>Bisleri Quantity</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('bisleriQty', -1)">-</button>
+                <input id="bisleriQty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('bisleriQty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Kinley Quantity</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('kinleyQty', -1)">-</button>
+                <input id="kinleyQty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('kinleyQty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Aqua Kelvin Quantity</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvinQty', -1)">-</button>
+                <input id="aquaKelvinQty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvinQty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Tata Quantity</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('tataQty', -1)">-</button>
+                <input id="tataQty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('tataQty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Bailey Quantity</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('baileyQty', -1)">-</button>
+                <input id="baileyQty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('baileyQty', 1)">+</button>
+            </div>
+        </div>
+        <h3>Delivery Type</h3>
+        <div class="delivery-option">
+            <input type="radio" id="deliverNow" name="deliveryType" value="now">
+            <label for="deliverNow">Deliver Now</label>
+            <br><br>
+            <input type="radio" id="slotBooking" name="deliveryType" value="slot">
+            <label for="slotBooking">Slot Booking</label>
+        </div>
+        <br><br>
+        <div id="slotSection">
+            <h3>Slot Booking</h3>
+            <div class="form-row clickable">
+                <label for="deliveryDate">🗓️ Select Date</label>
+                <input id="deliveryDate" type="date" class="full-input">
+            </div>
+            <div class="form-row">
+                <label for="deliverySlot">🕒 Select Delivery Slot</label>
+                <select id="deliverySlot">
+                    <option value="">Choose Slot</option>
+                    <option>6:00 AM - 9:00 AM</option>
+                    <option>9:00 AM - 12:00 PM</option>
+                    <option>12:00 PM - 3:00 PM</option>
+                    <option>3:00 PM - 6:00 PM</option>
+                    <option>6:00 PM - 8:00 PM</option>
+                </select>
+            </div>
+        </div>
+        <br><br>
+        <button id="placeOrderBtn">Place Order</button>
+        <button id="clearOrderBtn">Clear Button</button>
+        <div id="confirmationMessage"></div>
+        <h3>Order Summary</h3>
+        <div id="orderSummary">No items selected</div>
+        <script>
+            let customerData = JSON.parse(localStorage.getItem("customerData")) || {};
+        </script>
+        <script>
+            document.getElementById("customerName").innerText = "Welcome, " + (customerData.name || "Guest");
+            document.getElementById("customerDetails").innerText = "Phone: " + customerData.phone + " | Address: " + customerData.plot + ", " + customerData.road + ", " + customerData.area;
+            document.getElementById("editDetailsBtn").addEventListener("click", function () {
+                console.log("EDIT BUTTON CLICKED");
+                window.location.href = "index.html";
+            });
+            document.querySelectorAll(".clickable").forEach(row => {
+                row.addEventListener("click", () => {
+                    const input = row.querySelector("input");
+                    if (input && input.showPicker) {
+                        input.showPicker();
+                    }
+                });
+            });
+            function changeQty(id, change) {
+                const input = document.getElementById(id);
+                let value = parseInt(input.value) || 0;
+                value = value + change;
+                if (value < 0) value = 0;
+                input.value = value;
+            }
+        </script>
+    </div>
+</body>
+<script>
+    document.getElementById("deliverNow").addEventListener("change", function () {
+        document.getElementById("slotSection").style.display = "none";
+        document.getElementById("deliveryDate").value = "";
+        document.getElementById("deliverySlot").value = "";
+        updateSummary();
+    });
+    document.getElementById("slotBooking").addEventListener("change", function () {
+        document.getElementById("slotSection").style.display = "block"
+    });
+</script>
+<script>
+    document.getElementById("placeOrderBtn").addEventListener("click", function () {
+        console.log("BUTTON CLICKED!");
+        let orderData = {
+            bisleri: document.getElementById("bisleriQty").value,
+            kinley: document.getElementById("kinleyQty").value,
+            aquaKelvin: document.getElementById("aquaKelvinQty").value,
+            tata: document.getElementById("tataQty").value,
+            bailey: document.getElementById("baileyQty").value,
+            deliveryType: document.querySelector('input[name="deliveryType"]:checked')?.value || "",
+            deliveryDate: document.getElementById("deliveryDate").value,
+            deliverySlot: document.getElementById("deliverySlot").value
+        };
+        let total =
+            (Number(orderData.bisleri) || 0) * 120 +
+            (Number(orderData.kinley) || 0) * 130 +
+            (Number(orderData.aquaKelvin) || 0) * 60 +
+            (Number(orderData.tata) || 0) * 90 +
+            (Number(orderData.bailey) || 0) * 85;
+        if (
+            !orderData.bisleri &&
+            !orderData.kinley &&
+            !orderData.aquaKelvin &&
+            !orderData.tata &&
+            !orderData.bailey
+        ) {
+            alert("Please select at least one water can.");
+            return;
+        }
+        if
+            (!orderData.deliveryType) {
+            alert("Please select a delivery type!");
+            return;
+        }
+        if (
+            orderData.deliveryType === "slot" &&
+            (
+                !orderData.deliveryDate ||
+                !orderData.deliverySlot
+            )
+        ) {
+            alert("Please select delivery date and slot.");
+            return;
+        }
+        let completeOrder = {
+            id: Date.now(),
+            customer: customerData,
+            order: orderData,
+            timestamp: new Date().toISOString(),
+            status: "Pending"
+        };
+        fetch("http://localhost:3000/order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(completeOrder)
+        })
+            .then(res => res.text())
+            .then(data => {
+                console.log("SUCCESS:", data);
+                document.getElementById("confirmationMessage").innerHTML = `
+                    <h2>Order Placed Successfully</h2>
+                    <p><b>Customer:</b> ${customerData.name}</p>
+                    <p><b>Ordered Items:</b></p>
+                    <ul>
+                        ${orderData.bisleri > 0 ? `<li>Bisleri: ${orderData.bisleri}</li>` : ""}
+                        ${orderData.kinley > 0 ? `<li>Kinley: ${orderData.kinley}</li>` : ""}
+                        ${orderData.aquaKelvin > 0 ? `<li>Aqua Kelvin: ${orderData.aquaKelvin}</li>` : ""}
+                        ${orderData.tata > 0 ? `<li>Tata: ${orderData.tata}</li>` : ""}
+                        ${orderData.bailey > 0 ? `<li>Bailey: ${orderData.bailey}</li>` : ""}
+                        </ul>
+                        <p><b>Total Amount:</b> ₹${total}</p>
+                    <p><b>Delivery Date:</b> ${orderData.deliveryDate || "Delivery Now"}</p>
+                    <p><b>Delivery Slot:</b> ${orderData.deliverySlot || "Immediate Delivery"}</p>
+                    <p>Thank you for choosing our Water Delivery Service!</p>
+                    `;
+                document.getElementById("confirmationMessage").style.display = "block";
+                document.getElementById("orderSummary").style.display = "none";
+                const orderedItems = [
+                    orderData.bisleri > 0 ? `Bisleri: ${orderData.bisleri}` : "",
+                    orderData.kinley > 0 ? `Kinley: ${orderData.kinley}` : "",
+                    orderData.aquaKelvin > 0 ? `Aqua Kelvin: ${orderData.aquaKelvin}` : "",
+                    orderData.tata > 0 ? `Tata: ${orderData.tata}` : "",
+                    orderData.bailey > 0 ? `Bailey: ${orderData.bailey}` : ""
+                ].filter(item => item !== "").join("\n");
+                const whatsappMessage = `New Water Order
+Customer: ${customerData.name}
+Phone: ${customerData.phone}
+Address: Plot ${customerData.plot}, Road ${customerData.road}, ${customerData.area}
+
+Order: 
+${orderedItems}
+Total: ₹${total}
+
+Delivery:
+${orderData.deliveryType === "slot"
+                        ? `${orderData.deliveryDate}\n${orderData.deliverySlot}`
+                        : "Immediate Delivery"}
+`;
+                const phoneNumber = "919618151206";
+                const whatsappURL = `http://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(whatsappURL, "_blank");
+            })
+            .catch(err => {
+                console.log("FAILED:", err);
+                alert("Fetch failed" + err);
+            });
+    });
+</script>
+<script>
+    document.getElementById("clearOrderBtn").addEventListener("click", function () {
+        document.getElementById("confirmationMessage").innerHTML = "";
+        document.getElementById("confirmationMessage").style.display = "none";
+        document.getElementById("bisleriQty").value = "";
+        document.getElementById("kinleyQty").value = "";
+        document.getElementById("aquaKelvinQty").value = "";
+        document.getElementById("tataQty").value = "";
+        document.getElementById("baileyQty").value = "";
+        document.getElementById("deliveryDate").value = "";
+        document.getElementById("deliverySlot").value = "";
+        document.getElementById("orderSummary").innerHTML = "No items selected";
+    });
+</script>
+<script>
+    document.getElementById("slotSection").style.display = "none";
+</script>
+<script>
+    function updateSummary() {
+        let summary = [];
+        let bisleri = document.getElementById("bisleriQty").value;
+        let kinley = document.getElementById("kinleyQty").value;
+        let aquaKelvin = document.getElementById("aquaKelvinQty").value;
+        let tata = document.getElementById("tataQty").value;
+        let bailey = document.getElementById("baileyQty").value;
+        let total = 0;
+        total += (Number(bisleri) || 0) * 120;
+        total += (Number(kinley) || 0) * 130;
+        total += (Number(aquaKelvin) || 0) * 60;
+        total += (Number(tata) || 0) * 90;
+        total += (Number(bailey) || 0) * 85;
+        if (bisleri > 0) summary.push("Bilseri:" + bisleri);
+        if (kinley > 0) summary.push("Kinley: " + kinley);
+        if (aquaKelvin > 0) summary.push("Aqua Kelvin: " + aquaKelvin);
+        if (tata > 0) summary.push("Tata: " + tata);
+        if (bailey > 0) summary.push("Bailey: " + bailey);
+        let date = document.getElementById("deliveryDate").value;
+        let slot = document.getElementById("deliverySlot").value;
+        if (date) summary.push("Date: " + date);
+        if (slot) summary.push("Slot: " + slot);
+        document.getElementById("orderSummary").innerHTML = summary.length ? summary.join("<br>") + "<br><br><b>Total Amount: ₹" + total + "</b>"
+            : "No items selected";
+    }
+    const inputs = [
+        "bisleriQty",
+        "kinleyQty",
+        "aquaKelvinQty",
+        "tataQty",
+        "baileyQty",
+        "deliveryDate",
+        "deliverySlot"
+    ];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener("input", updateSummary);
+        document.getElementById(id).addEventListener("change", updateSummary);
+    });
+    document.querySelectorAll("input", "select").forEach(el => {
+        el.addEventListener("input", updateSummary);
+        el.addEventListener("change", updateSummary);
+    });
+</script>
+
+</html>
