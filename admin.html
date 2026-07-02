@@ -369,11 +369,6 @@
             );
             location.reload();
         });
-        setInterval(() => {
-            if (window.scrollY < 100) {
-                loadOrders();
-            }
-        }, 10000);
         document.getElementById("logoutBtn").addEventListener("click", () => {
             localStorage.removeItem("adminLoggedIn");
             window.location.href = "login.html";
