@@ -60,11 +60,14 @@ async function connectDB() {
     try {
         console.log("Trying MongoDB...");
         await client.connect();
+        console.log("client.connect() successful");
         const db = client.db("waterDelivery");
+        console.log("DB selected");
         ordersCollection = db.collection("orders");
+        console.log("Collection selected");
         console.log("MongoDB Connected");
     } catch (err) {
-        console.error(err);
+        console.error("MongoDB ERROR:", err)
     }
 }
 connectDB().then(() => {
