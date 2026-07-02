@@ -231,46 +231,48 @@
             document.getElementById("pendingFilterBtn").textContent =
                 showPendingOnly ? "Show All Orders" : "Show Pending Only";
         });
-        fetch("https://delivery-app-ders.onrender.com/orders")
-            .then(res => res.json())
-            .then(data => {
-                let container = document.getElementById("ordersContainer");
-                const pendingOrders = data.filter(order => order.status === "Pending").length;
-                document.getElementById("totalOrders").textContent = data.length;
-                const deliveredOrders = data.filter(order => order.status === "Delivered").length;
-                document.getElementById("deliveredOrders").textContent = deliveredOrders;
-                document.getElementById("pendingOrders").textContent = pendingOrders;
-                if (data.length === 0) {
-                    container.innerHTML = "No Orders Yet";
-                    return;
-                }
-                container.innerHTML = "";
-                data.reverse();
-                const sortedOrders = [
-                    ...data.filter(order => order.status === "Pending"),
-                    ...data.filter(order => order.status === "Delivered")
-                ];
-                sortedOrders.forEach(order => {
-                    if (showPendingOnly && order.status !== "Pending") {
+        function loadOrders() {
+            console.log("Loading orders...");
+            fetch("https://delivery-app-ders.onrender.com/orders")
+                .then(res => res.json())
+                .then(data => {
+                    let container = document.getElementById("ordersContainer");
+                    const pendingOrders = data.filter(order => order.status === "Pending").length;
+                    document.getElementById("totalOrders").textContent = data.length;
+                    const deliveredOrders = data.filter(order => order.status === "Delivered").length;
+                    document.getElementById("deliveredOrders").textContent = deliveredOrders;
+                    document.getElementById("pendingOrders").textContent = pendingOrders;
+                    if (data.length === 0) {
+                        container.innerHTML = "No Orders Yet";
                         return;
                     }
-                    const orderTime = new Date(order.timestamp).toLocaleString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true
-                    });
-                    console.log("Type:", order.order.deliveryType);
-                    console.log("Date:", order.order.deliveryDate);
-                    console.log("Slot:", order.order.deliverySlot);
-                    let total = 0;
-                    Object.entries(order.order || {}).forEach(([item, qty]) => {
-                        if (!prices[item]) return;
-                        total += (prices[item] || 0) * Number(qty || 0);
-                    });
-                    container.innerHTML += `
+                    container.innerHTML = "";
+                    data.reverse();
+                    const sortedOrders = [
+                        ...data.filter(order => order.status === "Pending"),
+                        ...data.filter(order => order.status === "Delivered")
+                    ];
+                    sortedOrders.forEach(order => {
+                        if (showPendingOnly && order.status !== "Pending") {
+                            return;
+                        }
+                        const orderTime = new Date(order.timestamp).toLocaleString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true
+                        });
+                        console.log("Type:", order.order.deliveryType);
+                        console.log("Date:", order.order.deliveryDate);
+                        console.log("Slot:", order.order.deliverySlot);
+                        let total = 0;
+                        Object.entries(order.order || {}).forEach(([item, qty]) => {
+                            if (!prices[item]) return;
+                            total += (prices[item] || 0) * Number(qty || 0);
+                        });
+                        container.innerHTML += `
                 <div class="order">
                     <h3>${order.customer.name}</h3>
                     <p>📞 ${order.customer.phone}</p>
@@ -282,44 +284,45 @@
                         <h3>🧾 Order Details</h3>
                         <div class="order-items">
                             ${Object.entries(order.order || {})
-                            .filter(([item, qty]) =>
-                                prices[item] && qty && qty !== "0"
-                            )
-                            .map(([item, qty]) => `<p>${item}: ${qty}</p>`)
-                            .join("")
-                        }
+                                .filter(([item, qty]) =>
+                                    prices[item] && qty && qty !== "0"
+                                )
+                                .map(([item, qty]) => `<p>${item}: ${qty}</p>`)
+                                .join("")
+                            }
                             <p><b>Delivery:</b> ${order.order.deliveryType}</p>
                             ${order.order.deliveryType === "slot"
-                            ? `
+                                ? `
                             <p><b>Date:</b> ${order.order.deliveryDate}</p>
                             <p><b>Time:</b> ${order.order.deliverySlot}</p>
                             `
-                            : ""
-                        }
+                                : ""
+                            }
                             <p>🚚 Status:
                                 <span class="status ${order.status.toLowerCase()}">
                                      ${order.status}
                                      </span>
                                      </p>
                             ${order.status === "Pending"
-                            ? `
+                                ? `
                             <div class="action-buttons">
                                 <button class="deliver-btn" data-id="${order._id}">Mark Delivered</button>
                             <button class="delete-btn" data-id="${order._id}">Delete</button>
-                            <a href="http://wa.me/91${order.customer.phone}" target="_blank" class="whatsapp-btn">
+                            <a href="https://wa.me/91${order.customer.phone}" target="_blank" class="whatsapp-btn">
                                 WhatsApp Customer
                                 </a>
                                 </div>
                                 `
-                            : `<p>✅ Delivered</p>`
-                        }
+                                : `<p>✅ Delivered</p>`
+                            }
                             <h3>Total: ₹${total}</h3>
                             </div>  
                     </div>
                     `;
-                });
-            })
-            .catch(err => console.log(err));
+                    });
+                })
+                .catch(err => console.log(err));
+        }
         document.addEventListener("click", function (e) {
             if (e.target.classList.contains("deliver-btn")) {
                 const id = e.target.getAttribute("data-id");
@@ -373,6 +376,8 @@
             localStorage.removeItem("adminLoggedIn");
             window.location.href = "login.html";
         });
+        loadOrders();
+        setInterval(loadOrders, 5000);
     </script>
 
 </body>

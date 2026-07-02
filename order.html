@@ -442,9 +442,12 @@ ${orderData.deliveryType === "slot"
                         ? `${orderData.deliveryDate}\n${orderData.deliverySlot}`
                         : "Immediate Delivery"}
 `;
-                const phoneNumber = "919618151206";
-                const whatsappURL = `http://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-                window.open(whatsappURL, "_blank");
+                const phoneNumber = "919966559213";
+                const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                const a = document.createElement("a");
+                a.href = whatsappURL;
+                a.target = "_self";
+                a.click();
             })
             .catch(err => {
                 console.log("FAILED:", err);
