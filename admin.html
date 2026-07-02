@@ -324,7 +324,7 @@
             if (e.target.classList.contains("deliver-btn")) {
                 const id = e.target.getAttribute("data-id");
                 console.log("Sending PATCH for:", id);
-                fetch(`http://localhost:3000/order/${id}`, {
+                fetch(`https://delivery-app-ders.onrender.com/order/${id}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
@@ -339,7 +339,7 @@
             if (e.target.classList.contains("delete-btn")) {
                 const id = e.target.getAttribute("data-id");
                 if (confirm("Are you sure you want to delete this order?")) {
-                    fetch(`http://localhost:3000/order/${id}`, {
+                    fetch(`https://delivery-app-ders.onrender.com/order/${id}`, {
                         method: "DELETE"
                     })
                         .then(res => {
@@ -351,7 +351,7 @@
             }
             if (e.target.id === "clearDeliveredBtn") {
                 if (confirm("Delete all delivered orders?")) {
-                    fetch("http://localhost:3000/orders/delivered", {
+                    fetch("https://delivery-app-ders.onrender.com/orders/delivered", {
                         method: "DELETE"
                     })
                         .then(res => {
