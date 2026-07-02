@@ -191,6 +191,60 @@
         .delete-all-btn:hover {
             background: #c82333;
         }
+
+        @media (max-width:768px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 15px;
+                box-sizing: border-box;
+            }
+
+            h1 {
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .dashboard {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card {
+                min-width: auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .action-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .deliver-btn,
+            .delete-btn,
+            .whatsapp-btn,
+            #pendingFilterBtn,
+            .delete-all-btn,
+            #logoutBtn {
+                width: 100%;
+                margin: 0;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .whatsapp-btn {
+                display: block;
+            }
+
+            .order {
+                word-break: break-word;
+            }
+        }
     </style>
 </head>
 
