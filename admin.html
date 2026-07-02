@@ -231,7 +231,7 @@
             document.getElementById("pendingFilterBtn").textContent =
                 showPendingOnly ? "Show All Orders" : "Show Pending Only";
         });
-        fetch("http://delivery-app-ders.onrender.com/orders")
+        fetch("https://delivery-app-ders.onrender.com/orders")
             .then(res => res.json())
             .then(data => {
                 let container = document.getElementById("ordersContainer");
