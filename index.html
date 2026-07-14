@@ -36,7 +36,8 @@
             color: #023e8a;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -44,9 +45,12 @@
             border: 1px solid #90e0ef;
             border-radius: 8px;
             box-sizing: border-box;
+            font-family: 'Trebuchet MS', sans-serif;
+            font-size: 14px;
         }
 
-        input:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: #0077b6;
 
@@ -66,6 +70,64 @@
         button:hover {
             background: #0077b6;
         }
+
+        .qty-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            gap: 10px;
+        }
+
+        .qty-box label {
+            flex: 1;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qty-controls input {
+            width: 60px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            border-radius: 8px;
+            background: #0096c7;
+            color: white;
+            font-size: 18px;
+        }
+
+        .qty-box:hover {
+            background: #0077b6;
+        }
+
+        .add-btn {
+            width: 90px;
+            height: 38px;
+            padding: 0;
+            font-weight: bold;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .counter span {
+            min-width: 25px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
     </style>
 
 </head>
@@ -81,24 +143,135 @@
         <br>
         <input id="phoneInput" type="text" placeholder="Enter Your Phone Number">
         <br><br>
+        <label>Apartment Name</label>
+        <br>
+        <select id="apartmentInput">
+            <option value="">Select Apartment</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="A3">A3</option>
+            <option value="A4">A4</option>
+            <option value="A5">A5</option>
+            <option value="A6">A6</option>
+            <option value="A7">A7</option>
+            <option value="A8">A8</option>
+            <option value="A9">A9</option>
+            <option value="A10">A10</option>
+            <option value="A11">A11</option>
+            <option value="A12">A12</option>
+        </select>
+        <br><br>
         <label>Plot Number</label>
         <br>
         <input id="plotInput" type="text" placeholder="Enter Plot Number">
         <br><br>
-        <label>Road Number</label>
+        <h3>Water Brands</h3>
+        <div class="qty-box" id="bisleri20Controls">
+            <label>Bisleri 20L - ₹120</label>
+            <button type="button" class="add-btn" onclick="addProduct('bisleri20Qty', 'bisleri20Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('bisleri20Qty', 'bisleri20Controls', -1)">-</button>
+                <span id="bisleri20Qty">1</span>
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('bisleri20Qty', 'bisleri20Controls', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>TATA 20L - ₹90</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', -1)">-</button>
+                <input id="tata20Qty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Bailey 20L - ₹85</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('bailey20Qty', -1)">-</button>
+                <input id="bailey20Qty" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('bailey20Qty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Aqua Kelvin 20L - ₹60</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin20Qty', -1)">-</button>
+                <input id="aquaKelvin20" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin20Qty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Aqua Kelvin 1L</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin1Qty', -1)">-</button>
+                <input id="aquaKelvin1" type="number" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin1Qty', 1)">+</button>
+            </div>
+        </div>
+        <div class="qty-box">
+            <label>Aqua Kelvin 500mL</label>
+            <div class="qty-controls">
+                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin500Qty', -1)">-</button>
+                <input id="aquaKelvin500" type="number" min="0" value="0">
+                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin500Qty', 1)">+</button>
+            </div>
+        </div>
+        <h3>Delivery Type</h3>
+        <div class="delivery-option">
+            <input type="radio" id="deliverNow" name="deliveryType" value="now">
+            <label for="deliverNow">Deliver Now</label>
+            <input type="radio" id="slotBooking" name="deliverytype" value="slot">
+            <label for="slotBooking">Slot Booking</label>
+        </div>
         <br>
-        <input id="roadInput" type="text" placeholder="Enter Road Number">
-        <br><br>
-        <label>Area / Colony</label>
+        <div id="slotSection" style="display:none;">
+            <h3>Slot Booking</h3>
+            <label for="deliveryDate">Select Date</label>
+            <input id="deliveryDate" type="date">
+            <label for="deliveryTime">Select Delivery Slot</label>
+            <select id="deliverySlot">
+                <option value="">Choose Slot</option>
+                <option>6:00 AM - 9:00 AM</option>
+                <option>9:00 AM - 12:00 AM</option>
+                <option>12:00 AM - 3:00 AM</option>
+                <option>3:00 AM - 6:00 AM</option>
+                <option>6:00 AM - 8:00 AM</option>
+            </select>
+        </div>
         <br>
-        <input id="areaInput" type="text" placeholder="Enter Area / Colony">
-        <br><br>
-        <label>Landmark(Optional)</label>
-        <input id="landmarkInput" type="text" placeholder="Enter Landmark">
-        <br><br>
-        <button id="continueBtn" type="button">Continue</button>
-        <script src="script.js"></script>
+        <button id="placeOrderBtn" type="button">Place Order</button>
+        <div id="confirmationMessage"></div>
+        <h3>Order Summary</h3>
+        <div id="orderSummary">No items selected</div>
     </div>
+    <script>
+        function addProduct(qtyId, controlsId) {
+            const controls = document.getElementById(controlsId);
+            const quantity = document.getElementById(qtyId);
+
+            quantity.innerText = 1;
+
+            controls.querySelector(".add-btn").style.display = "none";
+            controls.querySelector(".counter").style.display = "flex";
+        }
+
+        function changeQty(qtyId, controlsId, change) {
+            const controls = document.getElementById(controlsId);
+            const quantity = document.getElementById(qtyId);
+
+            let value = parseInt(quantity.innerText) || 0;
+            value += change;
+
+            if (value <= 0) {
+                quantity.innerText = 0;
+                controls.querySelector(".counter").style.display = "none";
+                controls.querySelector(".add-btn").style.display = "block";
+            } else {
+                quantity.innerText = value;
+            }
+        }
+    </script>
 </body>
 
 </html>
