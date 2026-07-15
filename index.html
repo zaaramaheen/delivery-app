@@ -76,57 +76,50 @@
             align-items: center;
             justify-content: space-between;
             margin: 15px 0;
-            gap: 10px;
+            gap: 8px;
         }
 
         .qty-box label {
             flex: 1;
+            white-space: nowrap;
+            font-size: 16px;
         }
 
         .qty-controls {
+            width: 110px;
+            min-width: 110px;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
+
         }
 
-        .qty-controls input {
-            width: 60px;
-            margin: 0;
-            text-align: center;
-        }
-
-        .qty-btn {
-            width: 35px;
-            height: 35px;
-            padding: 0;
-            border-radius: 8px;
-            background: #0096c7;
-            color: white;
-            font-size: 18px;
-        }
-
-        .qty-box:hover {
-            background: #0077b6;
-        }
 
         .add-btn {
-            width: 90px;
-            height: 38px;
+            width: 100px;
+            min-width: 100px;
+            height: 45px;
             padding: 0;
-            font-weight: bold;
         }
 
         .counter {
+            width: 130px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
         }
 
         .counter span {
-            min-width: 25px;
+            width: 30px;
             text-align: center;
             font-weight: bold;
-            font-size: 16px;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            flex-shrink: 0;
         }
     </style>
 
@@ -166,7 +159,7 @@
         <input id="plotInput" type="text" placeholder="Enter Plot Number">
         <br><br>
         <h3>Water Brands</h3>
-        <div class="qty-box" id="bisleri20Controls">
+        <div class="qty-controls" id="bisleri20Controls">
             <label>Bisleri 20L - ₹120</label>
             <button type="button" class="add-btn" onclick="addProduct('bisleri20Qty', 'bisleri20Controls')">ADD</button>
             <div class="counter" style="display:none;">
@@ -177,44 +170,63 @@
                     onclick="changeQty('bisleri20Qty', 'bisleri20Controls', 1)">+</button>
             </div>
         </div>
-        <div class="qty-box">
+        <div class="qty-controls" id="tata20Controls">
             <label>TATA 20L - ₹90</label>
-            <div class="qty-controls">
-                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', -1)">-</button>
-                <input id="tata20Qty" type="number" min="0" value="0">
-                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', 1)">+</button>
+
+            <button type="button" class="add-btn" onclick="addProduct('tata20Qty','tata20Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', 'tata20Controls', -1)">-</button>
+                <span id="tata20Qty">1</span>
+                <button type="button" class="qty-btn" onclick="changeQty('tata20Qty', 'tata20Controls', 1)">+</button>
             </div>
         </div>
-        <div class="qty-box">
+        <div class="qty-controls" id="bailey20Controls">
             <label>Bailey 20L - ₹85</label>
-            <div class="qty-controls">
-                <button type="button" class="qty-btn" onclick="changeQty('bailey20Qty', -1)">-</button>
-                <input id="bailey20Qty" type="number" min="0" value="0">
-                <button type="button" class="qty-btn" onclick="changeQty('bailey20Qty', 1)">+</button>
+
+            <button type="button" class="add-btn" onclick="addProduct('bailey20Qty', 'bailey20Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('bailey20Qty', 'bailey20Controls', -1)">-</button>
+                <span id="bailey20Qty">1</span>
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('bailey20Qty', 'bailey20Controls', 1)">+</button>
             </div>
         </div>
-        <div class="qty-box">
+        <div class="qty-controls" id="aquaKelvin20Controls">
             <label>Aqua Kelvin 20L - ₹60</label>
-            <div class="qty-controls">
-                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin20Qty', -1)">-</button>
-                <input id="aquaKelvin20" type="number" min="0" value="0">
-                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin20Qty', 1)">+</button>
+
+            <button type="button" class="add-btn"
+                onclick="addProduct('aquaKelvin20Qty', 'aquaKelvin20Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin20Qty', 'aquaKelvin20Controls', -1)">-</button>
+                <span id="aquaKelvin20Qty">1</span>
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin20Qty', 'aquaKelvin20Controls', 1)">+</button>
             </div>
         </div>
-        <div class="qty-box">
+        <div class="qty-controls" id="aquaKelvin1Controls">
             <label>Aqua Kelvin 1L</label>
-            <div class="qty-controls">
-                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin1Qty', -1)">-</button>
-                <input id="aquaKelvin1" type="number" min="0" value="0">
-                <button type="button" class="qty-btn" onclick="changeQty('aquaKelvin1Qty', 1)">+</button>
+            <button type="button" class="add-btn"
+                onclick="addProduct('aquaKelvin1Qty', 'aquaKelvin1Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin1Qty', 'aquaKelvin1Controls', -1)">-</button>
+                <span id="aquaKelvin1Qty">1</span>
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin1Qty', 'aquaKelvin1Controls', 1)">+</button>
             </div>
         </div>
-        <div class="qty-box">
+        <div class="qty-controls" id="aquaKelvin500Controls">
             <label>Aqua Kelvin 500mL</label>
-            <div class="qty-controls">
-                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin500Qty', -1)">-</button>
-                <input id="aquaKelvin500" type="number" min="0" value="0">
-                <button type="button" class="qty-box" onclick="changeQty('aquaKelvin500Qty', 1)">+</button>
+            <button type="button" class="add-btn"
+                onclick="addProduct('aquaKelvin500Qty', 'aquaKelvin500Controls')">ADD</button>
+            <div class="counter" style="display:none;">
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin500Qty', 'aquaKelvin500Controls', -1)">-</button>
+                <span id="aquaKelvin500Qty">1</span>
+                <button type="button" class="qty-btn"
+                    onclick="changeQty('aquaKelvin500Qty', 'aquaKelvin500Controls', 1)">+</button>
             </div>
         </div>
         <h3>Delivery Type</h3>
