@@ -322,11 +322,7 @@
                         console.log("Type:", order.order.deliveryType);
                         console.log("Date:", order.order.deliveryDate);
                         console.log("Slot:", order.order.deliverySlot);
-                        let total = 0;
-                        Object.entries(order.order || {}).forEach(([item, qty]) => {
-                            if (!prices[item]) return;
-                            total += (prices[item] || 0) * Number(qty || 0);
-                        });
+                        const total = order.total || 0;
                         container.innerHTML += `
                 <div class="order">
                     <h3>${order.customer.name}</h3>
