@@ -276,11 +276,12 @@
             window.location.href = "login.html";
         }
         const prices = {
-            bisleri: 120,
-            kinley: 130,
-            aquaKelvin: 60,
-            tata: 90,
-            bailey: 85
+            bisleri20: 120,
+            tata20: 90,
+            bailey20: 85,
+            aquaKelvin20: 60,
+            aquaKelvin1: 0,
+            aquaKelvin500: 0
         };
         let showPendingOnly = localStorage.getItem("showPendingOnly") === "true";
         document.addEventListener("DOMContentLoaded", () => {
@@ -327,10 +328,7 @@
                 <div class="order">
                     <h3>${order.customer.name}</h3>
                     <p>📞 ${order.customer.phone}</p>
-                    <p>📍 Plot ${order.customer.plot},
-                        Road no. ${order.customer.road},
-                        ${order.customer.area}
-                        </p> 
+                    <p>📍 ${order.customer.apartment}, Plot ${order.customer.plot}</p>
                         <p><b>Ordered At:</b> ${orderTime}</p>
                         <h3>🧾 Order Details</h3>
                         <div class="order-items">
@@ -338,7 +336,17 @@
                                 .filter(([item, qty]) =>
                                     prices[item] && qty && qty !== "0"
                                 )
-                                .map(([item, qty]) => `<p>${item}: ${qty}</p>`)
+                                .map(([item, qty]) => {
+                                    const names = {
+                                        bisleri20: "Bisleri 20L",
+                                        tata20: "TATA 20L",
+                                        bailey20: "Bailey 20L",
+                                        aquaKelvin20: "Aqua Kelvin 20L",
+                                        aquaKelvin1: "Aqua Kelvin 1L",
+                                        aquaKelvin500: "Aqua Kelvin 500mL"
+                                    };
+                                    return `<p>${names[item]} × ${qty}</p>`;
+                                })
                                 .join("")
                             }
                             <p><b>Delivery:</b> ${order.order.deliveryType}</p>
@@ -362,7 +370,7 @@
                                 `
                                 : `<p>✅ Delivered</p>`
                             }
-                            <h3>Total: ₹${total}</h3>
+                            <h3>Total: ₹${order.order.total}</h3>
                             </div>  
                     </div>
                     `;
