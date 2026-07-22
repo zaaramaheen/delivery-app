@@ -303,7 +303,6 @@
                         return;
                     }
                     container.innerHTML = "";
-                    data.reverse();
                     const sortedOrders = [
                         ...data.filter(order => order.status === "Pending"),
                         ...data.filter(order => order.status === "Delivered")
